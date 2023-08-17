@@ -36,12 +36,15 @@ class AppBaseProvider extends ChangeNotifier {
 
   Future<void> fetchData() async {
     try {
-      const url = 'https://baconipsum.com/api/?type=meat-and-filler';
+      const url = 'https://techcrunch.com/wp-json/wp/v2/posts?content=embed&per_page=5&page=3';
       final uri = Uri.parse(url);
       final response = await http.get(uri);
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body) as List;
-        _posts.addAll(jsonData.cast<String>());
+        //print(jsonData);
+        for(int i=0;i<jsonData.length;i++){
+          _posts.add(jsonData[i]['title']['rendered']);
+        }
         _dataController.add(_posts);
       }
     } catch (e) {
